@@ -3,6 +3,7 @@ import sys
 from .feature_params import FeatureParams
 from .split_params import SplittingParams
 from .train_params import TrainingParams
+from .preprocessing_params import PreprocessingParams
 from .train_pipeline_params import (
     read_training_pipeline_params,
     TrainingPipelineParamsSchema,
@@ -18,4 +19,5 @@ __all__ = [
     "TrainingPipelineParamsSchema",
     "TrainingParams",
     "read_training_pipeline_params",
+    "PreprocessingParams"
 ]

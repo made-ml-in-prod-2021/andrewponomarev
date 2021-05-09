@@ -13,8 +13,18 @@ pip install -r requirements.txt
 ~~~
 Usage:
 ~~~
-python src/train_pipeline.py configs/train_config.yaml
+python src/train_pipeline.py configs/train_config_lr.yaml
 ~~~
+for learning LogisticRegression
+
+or
+~~~
+python src/train_pipeline.py configs/train_config_rfc.yaml
+~~~
+for learning RandomForestClassifier
+
+or you can implement your own config based on [config dataclass](src/entities/train_pipeline_params.py)
+
 
 Test:
 ~~~
@@ -23,7 +33,7 @@ pytest tests/
 
 Homework estimation
 ----------
-9 points
+11 points
 
 Criterion
 ------------
@@ -34,7 +44,7 @@ Criterion
 0 | В описании к пулл реквесту описаны основные &quot;архитектурные&quot; и тактические решения, которые сделаны в вашей работе. | 2
 1 | ~~Выполнение EDA, закоммитьте ноутбук в папку с ноутбуками~~ | 2
 2 | ~~Проект имеет модульную структуру(не все в одном файле =) )~~ | 2
-3 | Использованы логгеры | 2
+3 | ~~Использованы логгеры~~ | 2
 4 | Написаны тесты на отдельные модули и на прогон всего пайплайна | 3
 5 | Для тестов генерируются синтетические данные, приближенные к реальным | 3
 6 | Обучение модели конфигурируется с помощью конфигов в json или yaml, закоммитьте как минимум 2 корректные конфигурации, с помощью которых можно обучить модель (разные модели, стратегии split, preprocessing) | 3
@@ -42,7 +52,7 @@ Criterion
 8 | Используйте кастомный трансформер(написанный своими руками) и протестируйте его | 3
 9 | Обучите модель, запишите в readme как это предлагается | 3
 10 | Напишите функцию predict, которая примет на вход артефакт/ы от обучения, тестовую выборку(без меток) и запишет предикт, напишите в readme как это сделать | 3
-11 | Используется hydra  (https://hydra.cc/docs/intro/) | 3 (доп баллы)
+11 | Используется hydra (https://hydra.cc/docs/intro/) | 3 (доп баллы)
 12 | Настроен CI(прогон тестов, линтера) на основе github actions  | 3 балла (доп баллы)
 13 | ~~Проведите самооценку, опишите, в какое колво баллов по вашему мнению стоит оценить вашу работу и почему~~ | 1 (доп баллы)
 

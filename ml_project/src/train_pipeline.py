@@ -52,14 +52,12 @@ def train_pipeline(training_pipeline_params: TrainingPipelineParams):
     logger.info(f"val_features.shape is {val_features.shape}")
     predicts = predict_model(
         model,
-        val_features,
-        training_pipeline_params.feature_params.use_log_trick,
+        val_features
     )
 
     metrics = evaluate_model(
         predicts,
-        val_target,
-        use_log_trick=training_pipeline_params.feature_params.use_log_trick,
+        val_target
     )
 
     with open(training_pipeline_params.metric_path, "w") as metric_file:
