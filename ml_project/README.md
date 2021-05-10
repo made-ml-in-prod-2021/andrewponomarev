@@ -24,14 +24,18 @@ python src/train_pipeline.py configs/train_config_rfc.yaml
 ~~~
 for learning RandomForestClassifier
 
-or you can implement your own config based on [config dataclass](src/entities/train_pipeline_params.py)
+Example of training configuration: [training config](configs/train_config.yaml)
+
+Or you can implement your own config based on [config dataclass](src/entities/train_pipeline_params.py)
 
 Prediction
 ----------
 ~~~
 python src/predict_pipeline.py configs/predict_config.yaml
 ~~~
-In [prediction config](configs/predict_config.yaml) important to write model_path and transformer_path which have been used in training pipeline
+Example of predict configuration: [prediction config](configs/predict_config.yaml)
+
+In [configuration file](configs/predict_config.yaml) important to write model_path and transformer_path which have been used in training pipeline
 
 Homework estimation
 ----------
