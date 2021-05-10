@@ -1,6 +1,8 @@
 from .predict_model import (
     predict_model,
-    evaluate_model
+    evaluate_model,
+    deserialize_model,
+    serialize_prediction
 )
 
 from .train_model import (
@@ -13,4 +15,6 @@ __all__ = [
     "serialize_model",
     "evaluate_model",
     "predict_model",
+    "deserialize_model",
+    "serialize_prediction"
 ]

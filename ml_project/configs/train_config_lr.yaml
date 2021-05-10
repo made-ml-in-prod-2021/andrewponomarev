@@ -1,14 +1,13 @@
 logging_config_path: "ml_project/configs/logging_config.yaml"
-input_data_path: "data/heart.csv"
+input_data_path: "data/raw/heart.csv"
 output_model_path: "models/model_lr.pkl"
+transformer_path: "models/transformer.pkl"
 metric_path: "models/metrics_lr.json"
 splitting:
   val_size: 0.2
   random_state: 3
-trains:
+train:
   model_type: "LogisticRegression"
-preprocessing:
-  numeric_scaler: "MinMaxScaler"
 features:
   categorical_features:
     - sex
@@ -24,4 +23,6 @@ features:
     - oldpeak
   features_to_drop:
   target_col: target
+  preprocessing:
+    numeric_scaler: "MinMaxScaler"
 

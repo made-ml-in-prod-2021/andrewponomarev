@@ -1,16 +1,16 @@
 import numpy as np
 import pandas as pd
-import logging
+import pickle
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, MinMaxScaler
 
-from entities import FeatureParams, PreprocessingParams
+from entities import FeatureParams
 
 
 def make_features(transformer: ColumnTransformer, df: pd.DataFrame) -> pd.DataFrame:
-    return pd.DataFrame(transformer.transform(df).toarray())
+    return pd.DataFrame(transformer.transform(df))
 
 
 def build_transformer(params: FeatureParams) -> ColumnTransformer:
@@ -23,11 +23,22 @@ def build_transformer(params: FeatureParams) -> ColumnTransformer:
             ),
             (
                 "numerical_pipeline",
-                __build_numerical_pipeline(),
+                __build_numerical_pipeline(params),
                 params.numerical_features,
             ),
         ]
     )
+    return transformer
+
+
+def serialize_transformer(transformer: ColumnTransformer, output: str):
+    with open(output, "wb") as f:
+        pickle.dump(transformer, f)
+
+
+def deserialize_transformer(input_: str) -> ColumnTransformer:
+    with open(input_, "rb") as f:
+        transformer = pickle.load(f)
     return transformer
 
 
@@ -55,14 +66,14 @@ def __build_categorical_pipeline() -> Pipeline:
     return categorical_pipeline
 
 
-def __build_numerical_pipeline(preprocessing_params: PreprocessingParams) -> Pipeline:
+def __build_numerical_pipeline(feature_params: FeatureParams) -> Pipeline:
     num_pipeline = Pipeline(
         [("impute", SimpleImputer(missing_values=np.nan, strategy="mean"))]
     )
 
-    if preprocessing_params.scaler == "StandardScaler":
-        num_pipeline.append(("scaler", StandardScaler()))
-    elif preprocessing_params.scaler == "MinMaxScaler":
-        num_pipeline.append(("scaler", MinMaxScaler()))
+    if feature_params.preprocessing.numeric_scaler == "StandardScaler":
+        num_pipeline.steps.append(("scaler", StandardScaler()))
+    elif feature_params.preprocessing.numeric_scaler == "MinMaxScaler":
+        num_pipeline.steps.append(("scaler", MinMaxScaler()))
 
     return num_pipeline
