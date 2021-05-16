@@ -7,14 +7,14 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 
-from entities import TrainingParams
+from src.entities import TrainingParams
 
-SklearnRegressionModel = Union[RandomForestClassifier, LogisticRegression]
+SklearnClassificationModel = Union[RandomForestClassifier, LogisticRegression]
 
 
 def train_model(
         features: pd.DataFrame, target: pd.Series, train_params: TrainingParams
-) -> SklearnRegressionModel:
+) -> SklearnClassificationModel:
 
     if train_params.model_type == "RandomForestClassifier":
         model = RandomForestClassifier(
@@ -33,7 +33,7 @@ def train_model(
     return model
 
 
-def serialize_model(model: SklearnRegressionModel, output: str) -> str:
+def serialize_model(model: SklearnClassificationModel, output: str) -> str:
     with open(output, "wb") as f:
         pickle.dump(model, f)
     return output

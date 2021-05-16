@@ -15,8 +15,6 @@ from .predict_pipeline_params import (
     PredictPipelineParams,
 )
 
-sys.modules[__name__] = sys.modules['entities']
-
 __all__ = [
     "FeatureParams",
     "SplittingParams",
