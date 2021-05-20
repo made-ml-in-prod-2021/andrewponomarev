@@ -6,7 +6,7 @@ import uvicorn
 
 from typing import List, Union, Optional
 from pydantic import BaseModel, conlist
-
+from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from fastapi import FastAPI
 
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class HeartDiseaseModel(BaseModel):
-    data: List[conlist(Union[float, str, None], min_items=13, max_items=13)]
+    data: List[conlist(Union[float, str, int, None], min_items=13, max_items=13)]
     features: List[str]
 
 
@@ -29,10 +29,11 @@ def load_object(path: str) -> Pipeline:
 
 
 def make_predict(
-    data: List, features: List[str], model: Pipeline,
+    data: List, features: List[str], model: Pipeline, transformer: ColumnTransformer
 ) -> List[HeartDiseaseResponse]:
     data = pd.DataFrame(data, columns=features)
-    predicts = model.predict(data)
+    transformed_data = transformer.transform(data)
+    predicts = model.predict(transformed_data)
 
     return [
         HeartDiseaseResponse(target=bool(target)) for target in predicts
@@ -50,13 +51,13 @@ def main():
 @app.on_event("startup")
 def load_model():
     global model
-    model_path = os.getenv("PATH_TO_MODEL")
-    if model_path is None:
-        err = f"PATH_TO_MODEL {model_path} is None"
-        logger.error(err)
-        raise RuntimeError(err)
+    model = load_object("model/model_lr.pkl")
 
-    model = load_object(model_path)
+
+@app.on_event("startup")
+def load_transformer():
+    global transformer
+    transformer = load_object("model/transformer.pkl")
 
 
 @app.get("/health")
@@ -64,9 +65,9 @@ def health() -> bool:
     return not (model is None)
 
 
-@app.get("/predict/", response_model=List[HeartDiseaseResponse])
+@app.post("/predict/", response_model=List[HeartDiseaseResponse])
 def predict(request: HeartDiseaseModel):
-    return make_predict(request.data, request.features, model)
+    return make_predict(request.data, request.features, model, transformer)
 
 
 if __name__ == "__main__":
