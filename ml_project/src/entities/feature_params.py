@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
 
-from src.entities import PreprocessingParams
+from entities import PreprocessingParams
 
 
 @dataclass()

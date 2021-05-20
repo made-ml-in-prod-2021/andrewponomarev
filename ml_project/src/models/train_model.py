@@ -7,7 +7,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 
-from src.entities import TrainingParams
+from entities import TrainingParams
 
 SklearnClassificationModel = Union[RandomForestClassifier, LogisticRegression]
 
