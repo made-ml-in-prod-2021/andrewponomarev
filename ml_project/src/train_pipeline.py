@@ -38,13 +38,13 @@ def train_pipeline(training_pipeline_params: TrainingPipelineParams):
         data, training_pipeline_params.splitting
     )
     logger.info(f"train_df.shape is {train_df.shape}")
-    logger.info(f"val_df.shape is {val_df.shape}")
+    logger.info(f"val_df.shape is {val_df .shape}")
 
     transformer = build_transformer(training_pipeline_params.features)
-    transformer.fit(train_df)
+    transformer.fit(train_df.drop(columns=[training_pipeline_params.features.target_col]))
     serialize_transformer(transformer, training_pipeline_params.transformer_path)
 
-    train_features = make_features(transformer, train_df)
+    train_features = make_features(transformer, train_df.drop(columns=[training_pipeline_params.features.target_col]))
     train_target = extract_target(train_df, training_pipeline_params.features)
 
     logger.info(f"train_features.shape is {train_features.shape}")
@@ -53,7 +53,7 @@ def train_pipeline(training_pipeline_params: TrainingPipelineParams):
         train_features, train_target, training_pipeline_params.train
     )
 
-    val_features = make_features(transformer, val_df)
+    val_features = make_features(transformer, val_df.drop(columns=[training_pipeline_params.features.target_col]))
     val_target = extract_target(val_df, training_pipeline_params.features)
 
     logger.info(f"val_features.shape is {val_features.shape}")
