@@ -23,12 +23,6 @@ logger.setLevel(logging.INFO)
 logger.addHandler(handler)
 
 
-def setup_logging(predict_pipeline_params: PredictPipelineParams):
-    with open(predict_pipeline_params.logging_config_path) as config_fin:
-        config = yaml.safe_load(config_fin)
-        logging.config.dictConfig(config)
-
-
 def predict_pipeline(predict_pipeline_params: PredictPipelineParams) -> str:
     logger.info(f"start predict pipeline with params {predict_pipeline_params}")
     data = read_data(predict_pipeline_params.input_data_path)

@@ -24,11 +24,6 @@ handler = logging.StreamHandler(sys.stdout)
 logger.setLevel(logging.INFO)
 logger.addHandler(handler)
 
-def setup_logging(train_pipeline_params: TrainingPipelineParams):
-    with open(train_pipeline_params.logging_config_path) as config_fin:
-        config = yaml.safe_load(config_fin)
-        logging.config.dictConfig(config)
-
 
 def train_pipeline(training_pipeline_params: TrainingPipelineParams):
     logger.info(f"start train pipeline with params {training_pipeline_params}")
