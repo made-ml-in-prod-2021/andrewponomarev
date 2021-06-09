@@ -1,0 +1,5 @@
+logging_config_path: "ml_project/configs/logging_config.yaml"
+input_data_path: "data/raw/heart.csv"
+predict_result_path: "models/prediction/lr_prediction.csv"
+model_path: "models/model_lr.pkl"
+transformer_path: "models/transformer.pkl"
