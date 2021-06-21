@@ -12,6 +12,8 @@ from fastapi import FastAPI, HTTPException
 
 from src.entities import HeartDiseaseData, PredictionResponse
 from src.validator import check_data
+import time
+
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +40,9 @@ def make_predict(data: List[HeartDiseaseData], pipeline: Pipeline, transformer: 
 
 
 app = FastAPI()
-
+start_time = time.time()
+APP_START_DELAY = 20
+APP_DURATION = 100
 
 @app.get("/")
 def main():
@@ -47,6 +51,7 @@ def main():
 
 @app.on_event("startup")
 def load_model():
+    time.sleep(APP_START_DELAY)
     model_path = os.getenv("PATH_TO_MODEL", default=DEFAULT_MODEL_PATH)
     if model_path is None:
         err = f"PATH_TO_MODEL {model_path} is None"
@@ -67,8 +72,10 @@ def load_transformer():
     transformer = load_object(transformer_path)
 
 
-@app.get("/health")
+@app.get("/status")
 def health() -> bool:
+    if time.time() - start_time > APP_DURATION:
+        raise RuntimeError("Application runtime limit exceeded.")
     return not (model is None)
 
 
